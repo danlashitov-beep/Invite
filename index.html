@@ -342,6 +342,21 @@
   }
   .overlay-close:hover{border-color:var(--rose);color:var(--rose);transform:rotate(90deg);}
 
+  /* ── оверлей для смайликов ──────────── */
+  #emojiOverlay {
+    position: fixed; inset: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(18, 6, 15, 0.95);
+    opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+  }
+  #emojiOverlay.show { opacity: 1; pointer-events: auto; }
+  #emojiDisplay { 
+    font-size: 35vmin; 
+    transform: scale(0.5); 
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  }
+  #emojiOverlay.show #emojiDisplay { transform: scale(1); }
+
   /* ── мобильные ──────────────────────── */
   @media (max-width:520px){
     .section{padding:78px 18px;}
@@ -412,7 +427,7 @@
 
 <!-- ══════════ ВОПРОС ══════════ -->
 <section class="section" id="question">
-  <h2 class="section-title reveal">Ну что, <span class="name" data-fill="name">…</span>,<br>ты <em>придёшь?</em></h2>
+  <h2 class="section-title reveal">Ну что, <span class="name" data-fill="nameNom">…</span>,<br>ты <em>придёшь?</em></h2>
   <p class="section-sub reveal">Отвечай честно. Только учти — один вариант немного стесняется 😌</p>
 
   <div class="btn-row reveal" id="btnRow">
@@ -433,18 +448,22 @@
   </div>
 </div>
 
+<!-- Оверлей для смайликов -->
+<div id="emojiOverlay"><span id="emojiDisplay">😡</span></div>
+
 <script>
 /* ══════════════════════════════════════════════════
-   НАСТРОЙКИ — измени под себя 👇
+   НАСТРОЙКИ
    ══════════════════════════════════════════════════ */
 const CONFIG = {
-  name:       "Полины",                       // Имя девушки
-  date:       "2026-11-05T21:30:00",       // Год-Месяц-ДеньTЧасы:Минуты:Секунды
-  time:       "20:00",                     // Время для карточки
-  restaurant: "секрет",                 // Название ресторана
-  address:    "Проспект мира, 12к1",           // Адрес
-  dressCode:  "То, в чём ты сияешь",       // Дресс-код
-  from:       "Даниил"                     // От кого
+  name:       "Полины",
+  nameNom:    "Полина",
+  date:       "2026-11-05T20:30:00",
+  time:       "20:30",
+  restaurant: "Секрет",
+  address:    "проспект Мира, 12к1",
+  dressCode:  "То, в чём ты сияешь",
+  from:       "Даниил"
 };
 /* ══════════════════════════════════════════════════ */
 
@@ -550,6 +569,26 @@ const noTexts = [
 let noCount = 0;
 let dodging = false;
 
+/* Функция для показа смайликов */
+function showEmojiSequence() {
+  const overlay = document.getElementById('emojiOverlay');
+  const display = document.getElementById('emojiDisplay');
+
+  overlay.classList.add('show');
+  display.textContent = '😡';
+
+  setTimeout(() => {
+    display.textContent = '💋';
+    display.style.transform = 'scale(1.2)';
+    setTimeout(() => display.style.transform = 'scale(1)', 200);
+  }, 1500);
+
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    display.style.transform = 'scale(0.5)';
+  }, 3000);
+}
+
 function moveNoButton(){
   const pad = 16;
   const w = noBtn.offsetWidth;
@@ -569,18 +608,18 @@ function dodge(){
 
   noCount++;
 
-  /* кнопка «Нет» исчезает после всех попыток */
   if (noCount >= noTexts.length){
     noBtn.style.opacity = '0';
     noBtn.style.pointerEvents = 'none';
     noBtn.style.transform = 'scale(.4)';
     yesBtn.style.transform = 'scale(1.55)';
+    
+    showEmojiSequence();
     return;
   }
 
   noBtn.textContent = noTexts[noCount];
 
-  /* первый побег — переводим в position:fixed на текущее место */
   if (!noBtn.classList.contains('floating')){
     const r = noBtn.getBoundingClientRect();
     noBtn.style.left   = r.left + 'px';
@@ -588,12 +627,11 @@ function dodge(){
     noBtn.style.width  = r.width + 'px';
     noBtn.style.height = r.height + 'px';
     noBtn.classList.add('floating');
-    void noBtn.offsetWidth; /* форсируем пересчёт стилей */
+    void noBtn.offsetWidth;
   }
 
   requestAnimationFrame(moveNoButton);
 
-  /* кнопка «Да» растёт */
   const scale = Math.min(1.55, 1 + noCount * 0.07);
   yesBtn.style.transform = 'scale(' + scale + ')';
 }
