@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Приглашение на свидание 💌</title>
+<meta name="theme-color" content="#12060f" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg-1:#12060f;
+    --rose:#f4a6c0;
+    --rose-deep:#e05c8a;
+    --gold:#e8c07d;
+    --gold-soft:#f6e3bf;
+    --text:#f7ecf2;
+    --muted:#c9a9bd;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Montserrat',sans-serif;
+    background:var(--bg-1);
+    color:var(--text);
+    overflow-x:hidden;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── фон ───────────────────────────── */
+  body::before{
+    content:'';
+    position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(ellipse at 20% 8%, rgba(224,92,138,.28), transparent 55%),
+      radial-gradient(ellipse at 82% 0%, rgba(232,192,125,.16), transparent 50%),
+      radial-gradient(ellipse at 50% 105%, rgba(120,60,180,.28), transparent 60%),
+      linear-gradient(180deg,#12060f,#1e0a1a 45%,#12060f);
+  }
+
+  #hearts{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;}
+  .float-heart{
+    position:absolute;bottom:-12vh;color:var(--rose);
+    animation:floatUp linear infinite;
+    will-change:transform;
+  }
+  @keyframes floatUp{
+    from{transform:translateY(0) rotate(0deg);}
+    to{transform:translateY(-125vh) rotate(360deg);}
+  }
+
+  #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:110;}
+
+  /* ── общие ──────────────────────────── */
+  .section{position:relative;z-index:1;padding:100px 24px;}
+
+  .section-title{
+    font-family:'Playfair Display',serif;
+    font-weight:400;
+    font-size:clamp(2rem,5.5vw,3.3rem);
+    line-height:1.15;
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .section-title em{font-style:italic;color:var(--rose);}
+
+  .section-sub{
+    text-align:center;
+    color:var(--muted);
+    font-weight:300;
+    font-size:clamp(.9rem,2.4vw,1.05rem);
+    margin-bottom:52px;
+    padding:0 8px;
+  }
+
+  .name{
+    font-style:italic;
+    background:linear-gradient(120deg,#f4a6c0,#e8c07d 45%,#f4a6c0);
+    background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;
+    animation:shine 7s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ── hero ───────────────────────────── */
+  .hero{
+    min-height:100svh;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    padding:32px 24px;
+    position:relative;z-index:1;
+  }
+  .hero-inner{max-width:720px;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s;}
+  .hero-inner.opened{transform:scale(.9);opacity:0;}
+
+  .hero-inner > *{opacity:0;transform:translateY(26px);animation:rise .95s cubic-bezier(.2,.8,.2,1) forwards;}
+  .hero-inner > *:nth-child(1){animation-delay:.15s}
+  .hero-inner > *:nth-child(2){animation-delay:.3s}
+  .hero-inner > *:nth-child(3){animation-delay:.45s}
+  .hero-inner > *:nth-child(4){animation-delay:.6s}
+  .hero-inner > *:nth-child(5){animation-delay:.75s}
+  @keyframes rise{to{opacity:1;transform:none;}}
+
+  .seal{
+    font-size:2.6rem;
+    display:inline-block;
+    margin-bottom:8px;
+    animation:breathe 3.4s ease-in-out infinite;
+    filter:drop-shadow(0 0 22px rgba(224,92,138,.75));
+  }
+  @keyframes breathe{
+    0%,100%{transform:scale(1) rotate(-4deg);}
+    50%{transform:scale(1.12) rotate(4deg);}
+  }
+
+  .eyebrow{
+    font-size:.72rem;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    color:var(--gold);
+    opacity:.95;
+    padding-left:.42em;
+  }
+
+  h1{
+    font-family:'Playfair Display',serif;
+    font-weight:400;
+    font-size:clamp(3rem,11vw,6rem);
+    line-height:1;
+    margin:20px 0 18px;
+  }
+
+  .hero-sub{
+    color:var(--muted);
+    font-weight:300;
+    font-size:clamp(.95rem,2.6vw,1.1rem);
+    max-width:460px;
+    margin:0 auto 38px;
+    line-height:1.65;
+  }
+
+  /* ── кнопки ─────────────────────────── */
+  .btn-primary{
+    font-family:'Montserrat',sans-serif;
+    font-weight:600;
+    font-size:.82rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#2a0a18;
+    background:linear-gradient(135deg,#f8e2b6,#e8c07d 42%,#f4a6c0);
+    border:none;
+    padding:18px 42px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 12px 34px -10px rgba(232,192,125,.7),inset 0 1px 0 rgba(255,255,255,.55);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;
+  }
+  .btn-primary:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 20px 46px -12px rgba(232,192,125,.9);}
+  .btn-primary:active{transform:translateY(-1px) scale(.99);}
+
+  .btn-row{
+    display:flex;justify-content:center;align-items:center;
+    gap:18px;flex-wrap:wrap;
+    position:relative;
+    min-height:64px;
+  }
+
+  .btn-yes{
+    font-family:'Montserrat',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    letter-spacing:.04em;
+    color:#fff;
+    background:linear-gradient(135deg,#e05c8a,#c93f74 50%,#e8823f);
+    border:none;
+    padding:18px 40px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    box-shadow:0 14px 36px -12px rgba(224,92,138,.9),inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .35s,filter .3s;
+    transform-origin:center;
+  }
+  .btn-yes:hover{filter:brightness(1.1);box-shadow:0 20px 50px -12px rgba(224,92,138,1);}
+
+  .btn-no{
+    font-family:'Montserrat',sans-serif;
+    font-size:1rem;
+    color:var(--muted);
+    background:transparent;
+    border:1.5px solid rgba(244,166,192,.4);
+    padding:17px 34px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:left .3s cubic-bezier(.2,.8,.2,1),top .3s cubic-bezier(.2,.8,.2,1),
+               opacity .45s,transform .45s,border-color .3s;
+  }
+  .btn-no:hover{border-color:rgba(244,166,192,.8);}
+  .btn-no.floating{
+    position:fixed;
+    z-index:60;
+    background:rgba(28,9,24,.92);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    box-shadow:0 12px 30px -12px rgba(0,0,0,.8);
+  }
+
+  /* ── карточки ───────────────────────── */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+    max-width:920px;
+    margin:0 auto;
+  }
+
+  .card{
+    background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
+    border:1px solid rgba(232,192,125,.22);
+    border-radius:22px;
+    padding:28px 18px;
+    text-align:center;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s;
+  }
+  .card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(232,192,125,.6);
+    box-shadow:0 26px 50px -26px rgba(224,92,138,.85);
+  }
+  .card .icon{font-size:1.85rem;display:block;margin-bottom:12px;}
+  .card .label{
+    font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:8px;
+  }
+  .card .value{
+    font-family:'Playfair Display',serif;
+    font-size:1.15rem;line-height:1.35;color:var(--gold-soft);
+  }
+
+  /* ── таймер ─────────────────────────── */
+  .countdown{
+    display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+    margin:64px auto 0;max-width:640px;
+  }
+  .cd-box{
+    min-width:82px;
+    padding:16px 12px 13px;
+    border-radius:18px;
+    background:linear-gradient(160deg,rgba(224,92,138,.16),rgba(255,255,255,.02));
+    border:1px solid rgba(244,166,192,.24);
+    text-align:center;
+  }
+  .cd-num{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.6rem,5vw,2.1rem);
+    line-height:1;color:var(--gold-soft);
+    font-variant-numeric:tabular-nums;
+  }
+  .cd-lbl{
+    font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin-top:8px;
+  }
+  .cd-caption{
+    text-align:center;color:var(--muted);font-weight:300;
+    font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;
+    margin-top:34px;padding-left:.22em;
+  }
+
+  /* ── оверлей ────────────────────────── */
+  .overlay{
+    position:fixed;inset:0;z-index:100;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    background:radial-gradient(circle at 50% 45%,rgba(62,16,46,.93),rgba(8,3,8,.975));
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    opacity:0;pointer-events:none;
+    transition:opacity .6s ease;
+  }
+  .overlay.show{opacity:1;pointer-events:auto;}
+
+  .overlay-card{
+    position:relative;
+    max-width:520px;width:100%;
+    text-align:center;
+    padding:52px 32px 44px;
+    border-radius:30px;
+    border:1px solid rgba(232,192,125,.35);
+    background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02));
+    box-shadow:0 44px 90px -34px rgba(224,92,138,.6);
+    transform:scale(.88) translateY(24px);
+    transition:transform .75s cubic-bezier(.2,.8,.2,1);
+  }
+  .overlay.show .overlay-card{transform:none;}
+
+  .big-heart{
+    font-size:3.4rem;line-height:1;
+    display:block;margin-bottom:22px;
+    animation:beat 1.5s ease-in-out infinite;
+    filter:drop-shadow(0 0 26px rgba(224,92,138,.8));
+  }
+  @keyframes beat{
+    0%,100%{transform:scale(1);}
+    15%{transform:scale(1.16);}
+    30%{transform:scale(1);}
+    45%{transform:scale(1.1);}
+  }
+
+  .overlay-card h2{
+    font-family:'Playfair Display',serif;
+    font-weight:400;
+    font-size:clamp(1.6rem,5vw,2.2rem);
+    margin-bottom:18px;
+  }
+  .overlay-card p{
+    color:var(--muted);font-weight:300;line-height:1.75;
+    font-size:.98rem;margin-bottom:10px;
+  }
+  .signature{
+    font-family:'Caveat',cursive;
+    font-size:1.6rem;color:var(--rose);
+    margin-top:26px !important;
+  }
+
+  .overlay-close{
+    position:absolute;top:14px;right:16px;
+    width:38px;height:38px;border-radius:50%;
+    background:transparent;border:1px solid rgba(244,166,192,.3);
+    color:var(--muted);font-size:1.1rem;cursor:pointer;
+    transition:border-color .3s,color .3s,transform .3s;
+  }
+  .overlay-close:hover{border-color:var(--rose);color:var(--rose);transform:rotate(90deg);}
+
+  /* ── мобильные ──────────────────────── */
+  @media (max-width:520px){
+    .section{padding:78px 18px;}
+    .cards{grid-template-columns:1fr 1fr;}
+    .card{padding:22px 12px;}
+    .card .value{font-size:1rem;}
+    .cd-box{min-width:68px;padding:13px 8px 11px;}
+    .overlay-card{padding:44px 22px 36px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="hearts" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="seal">💌</div>
+    <p class="eyebrow">Особое приглашение</p>
+    <h1>Для <span class="name" data-fill="name">…</span></h1>
+    <p class="hero-sub">У меня есть один важный вопрос.<br>Но сначала — конверт. Открой его.</p>
+    <button class="btn-primary" id="openBtn">Открыть конверт</button>
+  </div>
+</section>
+
+<!-- ══════════ ДЕТАЛИ ══════════ -->
+<section class="section" id="details">
+  <h2 class="section-title reveal">Приглашаю тебя <em>на свидание</em></h2>
+  <p class="section-sub reveal">По случаю самого лучшего дня в году — твоего дня рождения ✨</p>
+
+  <div class="cards">
+    <div class="card reveal">
+      <span class="icon">📅</span>
+      <div class="label">Дата</div>
+      <div class="value" data-fill="datePretty">…</div>
+    </div>
+    <div class="card reveal">
+      <span class="icon">🕰️</span>
+      <div class="label">Время</div>
+      <div class="value" data-fill="time">…</div>
+    </div>
+    <div class="card reveal">
+      <span class="icon">📍</span>
+      <div class="label">Место</div>
+      <div class="value"><span data-fill="restaurant">…</span><br><span style="font-size:.78rem;opacity:.7;font-family:'Montserrat',sans-serif;" data-fill="address"></span></div>
+    </div>
+    <div class="card reveal">
+      <span class="icon">👗</span>
+      <div class="label">Дресс-код</div>
+      <div class="value" data-fill="dressCode">…</div>
+    </div>
+  </div>
+
+  <div class="countdown reveal" id="countdown">
+    <div class="cd-box"><div class="cd-num" id="cdD">00</div><div class="cd-lbl">дней</div></div>
+    <div class="cd-box"><div class="cd-num" id="cdH">00</div><div class="cd-lbl">часов</div></div>
+    <div class="cd-box"><div class="cd-num" id="cdM">00</div><div class="cd-lbl">минут</div></div>
+    <div class="cd-box"><div class="cd-num" id="cdS">00</div><div class="cd-lbl">секунд</div></div>
+  </div>
+  <p class="cd-caption reveal" id="cdCaption">до нашей встречи</p>
+</section>
+
+<!-- ══════════ ВОПРОС ══════════ -->
+<section class="section" id="question">
+  <h2 class="section-title reveal">Ну что, <span class="name" data-fill="name">…</span>,<br>ты <em>придёшь?</em></h2>
+  <p class="section-sub reveal">Отвечай честно. Только учти — один вариант немного стесняется 😌</p>
+
+  <div class="btn-row reveal" id="btnRow">
+    <button class="btn-yes" id="yesBtn">Да, конечно 💕</button>
+    <button class="btn-no" id="noBtn">Нет</button>
+  </div>
+</section>
+
+<!-- ══════════ ОВЕРЛЕЙ ══════════ -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="overlay-card">
+    <button class="overlay-close" id="overlayClose" aria-label="Закрыть">✕</button>
+    <span class="big-heart">💖</span>
+    <h2>Я так и знал!</h2>
+    <p>Тогда <strong id="meetDate">…</strong> — я за тобой.</p>
+    <p>Надень то, в чём ты чувствуешь себя неотразимой. Остальное — моя забота.</p>
+    <p class="signature">С любовью, <span data-fill="from">…</span></p>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   НАСТРОЙКИ — измени под себя 👇
+   ══════════════════════════════════════════════════ */
+const CONFIG = {
+  name:       "Аня",                       // Имя девушки
+  date:       "2025-12-20T19:00:00",       // Год-Месяц-ДеньTЧасы:Минуты:Секунды
+  time:       "19:00",                     // Время для карточки
+  restaurant: "La Maison",                 // Название ресторана
+  address:    "ул. Пушкина, 10",           // Адрес
+  dressCode:  "То, в чём ты сияешь",       // Дресс-код
+  from:       "Максим"                     // От кого
+};
+/* ══════════════════════════════════════════════════ */
+
+/* ── подстановка данных ─────────────────────────── */
+const targetDate = new Date(CONFIG.date);
+CONFIG.datePretty = targetDate.toLocaleDateString('ru-RU', { day:'numeric', month:'long' });
+
+document.querySelectorAll('[data-fill]').forEach(el => {
+  el.textContent = CONFIG[el.dataset.fill] ?? '';
+});
+
+document.getElementById('meetDate').textContent =
+  targetDate.toLocaleDateString('ru-RU', { day:'numeric', month:'long', weekday:'long' }) +
+  ' в ' + CONFIG.time;
+
+/* ── парящие сердечки ───────────────────────────── */
+(function floatingHearts(){
+  const box = document.getElementById('hearts');
+  const symbols = ['❤','✨','🌸','💕','✦','🤍','💗'];
+  const count = window.innerWidth < 600 ? 16 : 26;
+
+  for (let i = 0; i < count; i++){
+    const s = document.createElement('span');
+    s.className = 'float-heart';
+    s.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    s.style.left = (Math.random() * 100) + 'vw';
+    s.style.fontSize = (10 + Math.random() * 20) + 'px';
+    s.style.animationDuration = (14 + Math.random() * 18) + 's';
+    s.style.animationDelay = (-Math.random() * 26) + 's';
+    s.style.opacity = (0.12 + Math.random() * 0.35).toFixed(2);
+    box.appendChild(s);
+  }
+})();
+
+/* ── появление секций при скролле ───────────────── */
+(function revealOnScroll(){
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 0.09 + 's';
+    io.observe(el);
+  });
+})();
+
+/* ── кнопка «открыть конверт» ───────────────────── */
+document.getElementById('openBtn').addEventListener('click', () => {
+  const inner = document.querySelector('.hero-inner');
+  inner.classList.add('opened');
+  setTimeout(() => {
+    document.getElementById('details').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => inner.classList.remove('opened'), 900);
+  }, 480);
+});
+
+/* ── обратный отсчёт ────────────────────────────── */
+(function countdown(){
+  const D = document.getElementById('cdD');
+  const H = document.getElementById('cdH');
+  const M = document.getElementById('cdM');
+  const S = document.getElementById('cdS');
+  const caption = document.getElementById('cdCaption');
+  const box = document.getElementById('countdown');
+  const pad = n => String(Math.max(0, n)).padStart(2, '0');
+
+  function tick(){
+    let diff = targetDate.getTime() - Date.now();
+
+    if (diff <= 0){
+      box.style.display = 'none';
+      caption.textContent = 'Этот день настал ✨';
+      return;
+    }
+
+    D.textContent = pad(Math.floor(diff / 86400000));
+    H.textContent = pad(Math.floor(diff % 86400000 / 3600000));
+    M.textContent = pad(Math.floor(diff % 3600000 / 60000));
+    S.textContent = pad(Math.floor(diff % 60000 / 1000));
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ── кнопка «Нет», которая убегает ──────────────── */
+const noBtn  = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+
+const noTexts = [
+  'Нет',
+  'Точно нет?',
+  'Уверена?',
+  'Подумай ещё…',
+  'Не торопись',
+  'Ты серьёзно?',
+  'А если да? 😏',
+  'Не-а, не верю',
+  'Последний шанс',
+  'Всё равно жду 💕'
+];
+
+let noCount = 0;
+let dodging = false;
+
+function moveNoButton(){
+  const pad = 16;
+  const w = noBtn.offsetWidth;
+  const h = noBtn.offsetHeight;
+  const maxX = Math.max(pad, window.innerWidth - w - pad);
+  const maxY = Math.max(pad, window.innerHeight - h - pad);
+  const x = pad + Math.random() * (maxX - pad);
+  const y = pad + Math.random() * (maxY - pad);
+  noBtn.style.left = x + 'px';
+  noBtn.style.top  = y + 'px';
+}
+
+function dodge(){
+  if (dodging) return;
+  dodging = true;
+  setTimeout(() => { dodging = false; }, 220);
+
+  noCount++;
+
+  /* кнопка «Нет» исчезает после всех попыток */
+  if (noCount >= noTexts.length){
+    noBtn.style.opacity = '0';
+    noBtn.style.pointerEvents = 'none';
+    noBtn.style.transform = 'scale(.4)';
+    yesBtn.style.transform = 'scale(1.55)';
+    return;
+  }
+
+  noBtn.textContent = noTexts[noCount];
+
+  /* первый побег — переводим в position:fixed на текущее место */
+  if (!noBtn.classList.contains('floating')){
+    const r = noBtn.getBoundingClientRect();
+    noBtn.style.left   = r.left + 'px';
+    noBtn.style.top    = r.top + 'px';
+    noBtn.style.width  = r.width + 'px';
+    noBtn.style.height = r.height + 'px';
+    noBtn.classList.add('floating');
+    void noBtn.offsetWidth; /* форсируем пересчёт стилей */
+  }
+
+  requestAnimationFrame(moveNoButton);
+
+  /* кнопка «Да» растёт */
+  const scale = Math.min(1.55, 1 + noCount * 0.07);
+  yesBtn.style.transform = 'scale(' + scale + ')';
+}
+
+noBtn.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') dodge(); });
+noBtn.addEventListener('click', e => { e.preventDefault(); dodge(); });
+noBtn.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, { passive: false });
+
+/* ── конфетти ───────────────────────────────────── */
+function drawHeart(ctx, s){
+  ctx.beginPath();
+  ctx.moveTo(0, s * 0.36);
+  ctx.bezierCurveTo(-s, -s * 0.32, -s * 0.52, -s, 0, -s * 0.44);
+  ctx.bezierCurveTo(s * 0.52, -s, s, -s * 0.32, 0, s * 0.36);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function confettiBurst(){
+  const canvas = document.getElementById('fx');
+  const ctx = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#f4a6c0','#e05c8a','#e8c07d','#fff0f6','#c86dd7','#f6e3bf'];
+  const parts = [];
+  const cx = canvas.width / 2;
+  const cy = canvas.height * 0.42;
+
+  for (let i = 0; i < 170; i++){
+    parts.push({
+      x: cx + (Math.random() - 0.5) * 220,
+      y: cy + (Math.random() - 0.5) * 90,
+      vx: (Math.random() - 0.5) * 16,
+      vy: (Math.random() - 1.35) * 15,
+      size: 4 + Math.random() * 9,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.32,
+      shape: Math.random() < 0.35 ? 'heart' : 'rect',
+      life: 1
+    });
+  }
+
+  function frame(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+
+    for (const p of parts){
+      p.vy += 0.34;
+      p.vx *= 0.994;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life -= 0.0055;
+
+      if (p.life > 0 && p.y < canvas.height + 60) alive = true;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      if (p.shape === 'rect'){
+        ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      } else {
+        drawHeart(ctx, p.size * 0.65);
+      }
+      ctx.restore();
+    }
+
+    if (alive) requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  frame();
+}
+
+/* ── финальный экран ────────────────────────────── */
+const overlay = document.getElementById('overlay');
+
+function celebrate(){
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(confettiBurst, 260);
+  setTimeout(confettiBurst, 1000);
+}
+
+yesBtn.addEventListener('click', celebrate);
+
+document.getElementById('overlayClose').addEventListener('click', () => {
+  overlay.classList.remove('show');
+  document.body.style.overflow = '';
+});
+
+overlay.addEventListener('click', e => {
+  if (e.target === overlay){
+    overlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+});
+
+/* ── страховка: при ресайзе возвращаем «Нет» в экран ── */
+window.addEventListener('resize', () => {
+  if (noBtn.classList.contains('floating')){
+    const r = noBtn.getBoundingClientRect();
+    if (r.left > window.innerWidth - 40 || r.top > window.innerHeight - 40) moveNoButton();
+  }
+});
+</script>
+</body>
+</html>
